@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Theo dõi">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#1D4A93">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Phiếu theo dõi 26 tuần</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --paper:#F2F6F4;--grid:rgba(30,96,78,.07);--sheet:#FFFFFF;--rule:#DCE6E1;--margin:#E7A1A8;
+  --ink:#1D4A93;--ink-2:#2F62B8;--ink-wash:rgba(29,74,147,.08);
+  --red:#BF2F3B;--red-wash:rgba(191,47,59,.07);
+  --text:#212829;--muted:#5B6864;--hl:#F3E07A;--radius:6px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1517;--grid:rgba(147,181,244,.055);--sheet:#151E21;--rule:#25333A;--margin:#7A3D45;
+    --ink:#93B5F4;--ink-2:#B6CDF8;--ink-wash:rgba(147,181,244,.11);
+    --red:#F08A93;--red-wash:rgba(240,138,147,.10);
+    --text:#E3EAE8;--muted:#9AA8A4;--hl:#6B5F22;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1517;--grid:rgba(147,181,244,.055);--sheet:#151E21;--rule:#25333A;--margin:#7A3D45;
+  --ink:#93B5F4;--ink-2:#B6CDF8;--ink-wash:rgba(147,181,244,.11);
+  --red:#F08A93;--red-wash:rgba(240,138,147,.10);
+  --text:#E3EAE8;--muted:#9AA8A4;--hl:#6B5F22;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--text);background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:16px;line-height:1.5;
+}
+.app{max-width:560px;margin:0 auto;padding:10px 16px calc(92px + env(safe-area-inset-bottom,0px))}
+header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0 8px}
+.brand{font-weight:600;font-size:.95rem;color:var(--muted);margin:0}
+#status{font-size:.8rem;color:var(--muted);text-align:right}
+#status[data-s="error"]{color:var(--red)}
+.datebar{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:8px;margin:2px 0 6px}
+.navbtn{height:48px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:var(--radius);font:inherit;font-size:1.5rem;line-height:1;cursor:pointer}
+.datehead{text-align:center;min-width:0}
+.dow{font-size:.9rem;color:var(--muted);font-weight:500}
+.dnum{display:inline-block;font-size:2.1rem;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.15;font-variant-numeric:tabular-nums;padding:0 6px}
+.dnum.is-today{background:linear-gradient(transparent 58%,var(--hl) 58%,var(--hl) 90%,transparent 90%)}
+.wkline{font-size:.92rem;font-weight:500}
+.center{text-align:center}
+.link{background:none;border:0;color:var(--ink);font:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
+.note{border-left:3px solid var(--red);background:var(--red-wash);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;margin:10px 0;font-size:.93rem}
+.note.ink{border-left-color:var(--ink);background:var(--ink-wash)}
+.sheet{background:var(--sheet);border:1px solid var(--ink);border-radius:var(--radius);overflow:hidden;margin-top:10px}
+.sheet-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 14px;border-bottom:1px solid var(--ink)}
+.sheet-h h2{margin:0;font-size:1.05rem;font-weight:700;color:var(--ink)}
+.row{display:grid;grid-template-columns:70px 1fr;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.row .t{padding:13px 8px 12px 14px;font-weight:600;font-size:.82rem;line-height:1.3;color:var(--ink);font-variant-numeric:tabular-nums;border-right:1.5px solid var(--margin)}
+.row .c{padding:10px 14px;display:flex;gap:12px;align-items:flex-start;justify-content:space-between;min-width:0}
+.row .c.col{display:block}
+.lbl{font-weight:600}
+.sub{font-size:.86rem;color:var(--muted);margin:2px 0 0}
+.box{flex:0 0 auto;width:36px;height:36px;border:1.5px solid var(--ink);border-radius:4px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink);padding:0}
+.box[aria-checked="true"]{background:var(--ink-wash)}
+.box svg{width:24px;height:24px;visibility:hidden}
+.box[aria-checked="true"] svg{visibility:visible}
+.blank{display:flex;align-items:baseline;gap:4px;flex:0 0 auto;color:var(--muted);font-size:.9rem}
+.blank input{width:4.4em;font:inherit;font-weight:700;font-size:1.15rem;color:var(--ink);background:transparent;border:0;border-bottom:1.5px solid var(--ink);padding:2px;text-align:right;border-radius:0}
+.blank input::placeholder{color:var(--muted);opacity:.6;font-weight:500}
+.mv{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{min-height:42px;padding:0 14px;border:1.5px solid var(--ink);border-radius:var(--radius);background:transparent;color:var(--ink);font:inherit;font-weight:600;font-size:.93rem;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+details.ex{margin-top:8px}
+details.ex summary{cursor:pointer;color:var(--ink);font-weight:600;font-size:.92rem;padding:4px 0}
+ol.exl{margin:6px 0 4px;padding-left:1.3em}
+ol.exl li{margin:3px 0}
+.meta{margin-top:14px;font-size:.93rem}
+.meta p{margin:0 0 10px}
+.typesel{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+select,input[type=date]{font:inherit;color:var(--text);background:var(--sheet);border:1px solid var(--ink);border-radius:var(--radius);padding:8px 10px;min-height:42px}
+select:disabled{opacity:.5}
+a{color:var(--ink);font-weight:600}
+.pad{padding:12px 14px}
+.stat{padding:12px 14px;border-bottom:1px solid var(--rule)}
+.stat:last-child{border-bottom:0}
+.big{font-size:2rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.seg{display:flex;gap:6px;padding:10px 14px 0}
+.seg .btn{min-height:36px;font-size:.85rem;padding:0 12px}
+.chartwrap{padding:6px 8px 2px}
+.chartwrap svg{width:100%;height:auto;display:block}
+.gl{stroke:var(--rule);stroke-width:1}
+.vl{stroke:var(--rule);stroke-width:1;stroke-dasharray:2 3}
+.ax{fill:var(--muted);font-size:10px;font-family:inherit}
+.tg{fill:none;stroke:var(--red);stroke-width:1.6;stroke-dasharray:5 4}
+.av{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.pt{fill:var(--ink);opacity:.5}
+.td{stroke:var(--hl);stroke-width:4}
+.legend{font-size:.8rem;color:var(--muted);padding:0 14px 10px;margin:0}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.kv span:nth-child(even){font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.chain{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:12px 14px 6px}
+.chain .h{font-size:.75rem;color:var(--muted);text-align:center;font-weight:600}
+.cell{aspect-ratio:1;border:1px solid var(--rule);border-radius:4px;display:grid;place-items:center;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.cell.done{background:var(--ink);border-color:var(--ink);color:var(--sheet);font-weight:700}
+.cell.min{background:var(--ink-wash);border:1.5px solid var(--ink);color:var(--ink);font-weight:700}
+.cell.miss{border:1.5px dashed var(--red);color:var(--red)}
+.cell.rest{border:1.5px dotted var(--muted)}
+.cell.future,.cell.pre{opacity:.45}
+.cell.today{box-shadow:0 0 0 3px var(--hl)}
+textarea{display:block;width:100%;min-height:90px;margin:8px 0;font:inherit;font-size:.85rem;color:var(--text);background:var(--sheet);border:1px solid var(--ink);border-radius:var(--radius);padding:8px}
+.formrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.radio{display:flex;align-items:center;gap:8px;min-height:40px}
+.radio input{width:20px;height:20px;accent-color:var(--ink)}
+.sumtext{margin:0 0 10px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--sheet);border-top:1px solid var(--ink);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{display:grid;grid-template-columns:repeat(3,1fr);max-width:560px;margin:0 auto}
+nav.tabs button{min-height:56px;background:transparent;border:0;border-top:3px solid transparent;font:inherit;font-weight:600;color:var(--muted);cursor:pointer}
+nav.tabs button[aria-current="page"]{color:var(--ink);border-top-color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <p class="brand">Phiếu theo dõi 26 tuần</p>
+    <span id="status" role="status" aria-live="polite"></span>
+  </header>
+  <main id="view"><div class="note ink" style="margin-top:16px">Đang mở phiếu theo dõi. Nếu trang không hiện, hãy mở bằng Safari.</div></main>
+</div>
+<nav class="tabs" aria-label="Chuyển trang">
+  <div class="in">
+    <button type="button" data-tab="today" aria-current="page">Hôm nay</button>
+    <button type="button" data-tab="progress">Tiến độ</button>
+    <button type="button" data-tab="settings">Cài đặt</button>
+  </div>
+</nav>
+<script>
+(function(){
+'use strict';
+/*LOGIC-START*/
+var DAYMS=86400000;
+var P={
+  start:'2026-10-12',end:'2027-05-09',legacyEnd:'2026-10-15',
+  tetFrom:'2027-02-04',tetTo:'2027-02-10',pauseFrom:'2027-02-01',pauseTo:'2027-02-14',
+  parties:{'2026-12-24':'Noel','2026-12-31':'Tết Dương lịch','2027-01-01':'Tết Dương lịch','2027-02-27':'Ngày Thầy thuốc Việt Nam'},
+  reviews:['2027-01-03','2027-02-14'],
+  milestones:[['2026-10-11',90],['2026-11-08',88],['2026-12-06',86],['2027-01-03',84],['2027-01-31',81.5],['2027-02-14',81.5],['2027-03-14',78.5],['2027-04-11',75.5],['2027-05-09',73]],
+  stages:[null,
+    {from:'2026-10-12',name:'Cân mỗi sáng và bữa tối không đặt qua ứng dụng',rule:'cân và bữa tối không đặt ứng dụng, mỗi việc ít nhất 5 ngày/tuần'},
+    {from:'2026-11-09',name:'Đóng bếp sau bữa tối',rule:'đóng bếp ít nhất 5 ngày/tuần'},
+    {from:'2026-12-07',name:'Trưa ở căng tin theo mẫu',rule:'trưa theo mẫu ít nhất 5 ngày/tuần'},
+    {from:'2027-01-04',name:'Tập tạ 2 buổi mỗi tuần',rule:'ít nhất 2 buổi tạ mỗi tuần'},
+    {from:'2027-02-15',name:'Bữa sáng có đạm',rule:'bữa sáng có đạm ít nhất 5 ngày/tuần'},
+    {from:'2027-03-15',name:'Đi cầu thang, đi bộ ngày nghỉ',rule:'vận động ít nhất 5 ngày/tuần'},
+    {from:'2027-04-12',name:'Meal prep chiều ra trực',rule:''}]
+};
+function toNum(s){var a=s.split('-');return Math.round(Date.UTC(+a[0],+a[1]-1,+a[2])/DAYMS);}
+function fromNum(n){var d=new Date(n*DAYMS);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0');}
+function addDays(s,k){return fromNum(toNum(s)+k);}
+function dowOf(s){return new Date(toNum(s)*DAYMS).getUTCDay();}
+function mod(a,n){return ((a%n)+n)%n;}
+var DATE_RE=/^\d{4}-\d{2}-\d{2}$/;
+var CYCLE=['truc','ratruc','lam','lam','lam','lam'];
+function newState(){return {v:2,days:{},anchors:[{from:'2026-09-01',anchor:'2026-10-13'}],levelMode:'auto',levelManual:1,stageMode:'auto',stageManual:1,updatedAt:0};}
+function anchorFor(st,s){var a=st.anchors[0].anchor,n=toNum(s);for(var i=0;i<st.anchors.length;i++){if(toNum(st.anchors[i].from)<=n)a=st.anchors[i].anchor;}return a;}
+function cycleIdx(st,s){return mod(toNum(s)-toNum(anchorFor(st,s)),6);}
+function scheduledType(st,s){return CYCLE[cycleIdx(st,s)];}
+function normType(t){return (t==='ta'||t==='dibo')?'lam':t;}
+function dayType(st,s){var d=st.days[s];if(d&&d.type)return normType(d.type);return scheduledType(st,s);}
+function normalize(o){
+  var s=newState();
+  if(!o||typeof o!=='object')return s;
+  if(o.days&&typeof o.days==='object'){
+    var days=JSON.parse(JSON.stringify(o.days));
+    Object.keys(days).forEach(function(k){if(DATE_RE.test(k)&&days[k]&&typeof days[k]==='object')s.days[k]=days[k];});
+  }
+  if(Array.isArray(o.anchors)){
+    var an=o.anchors.filter(function(a){return a&&DATE_RE.test(a.from)&&DATE_RE.test(a.anchor);})
+      .map(function(a){return {from:a.from,anchor:a.anchor};})
+      .sort(function(x,y){return toNum(x.from)-toNum(y.from);});
+    if(an.length)s.anchors=an;
+  }
+  if(o.levelMode==='manual')s.levelMode='manual';
+  if([1,2,3,4,5].indexOf(o.levelManual)>=0)s.levelManual=o.levelManual;
+  if(o.stageMode==='manual')s.stageMode='manual';
+  if([1,2,3,4,5,6,7].indexOf(o.stageManual)>=0)s.stageManual=o.stageManual;
+  s.updatedAt=+o.updatedAt||0;
+  if((+o.v||1)<2){
+    Object.keys(s.days).forEach(function(k){
+      var d=s.days[k];
+      if(toNum(k)<toNum(P.legacyEnd)&&d.move&&!d.walk){var i=cycleIdx(s,k);if(i!==2&&i!==4){d.walk=true;delete d.move;}}
+    });
+  }
+  return s;
+}
+function inTet(s){var n=toNum(s);return n>=toNum(P.tetFrom)&&n<=toNum(P.tetTo);}
+function weekNo(s){var d=toNum(s)-toNum(P.start);return d<0?0:Math.floor(d/7)+1;}
+function liftDone(st,s){var d=st.days[s];return d&&(d.move==='done'||d.move==='min')?d.move:null;}
+function walkDone(st,s){var d=st.days[s];return !!(d&&d.walk);}
+function anyMove(st,s){return walkDone(st,s)?'done':liftDone(st,s);}
+function prepDone(st,s){var d=st.days[s];return !!(d&&d.prep);}
+function boxesAvailable(st,s){for(var k=1;k<=3;k++){if(prepDone(st,addDays(s,-k)))return true;}return false;}
+function weekStart(s){return addDays(s,-((dowOf(s)+6)%7));}
+function liftsInWeek(st,s,upTo){var mon=weekStart(s),r={all:0,done:0};for(var k=0;k<7;k++){var d=addDays(mon,k);if(upTo&&toNum(d)>toNum(upTo))break;var m=liftDone(st,d);if(m){r.all++;if(m==='done')r.done++;}}return r;}
+function countIn(m,fn){var c=0;for(var k=0;k<7;k++){if(fn(addDays(m,k)))c++;}return c;}
+function stagePass(st,k,m){
+  var a=fromNum(toNum(m)-14),b=fromNum(toNum(m)-7);
+  function has(key){return function(s){var d=st.days[s];return !!(d&&d[key]);};}
+  function ok(w){
+    if(k===1)return countIn(w,function(s){var d=st.days[s];return !!d&&typeof d.w==='number';})>=5&&countIn(w,has('dinner'))>=5;
+    if(k===2)return countIn(w,has('kitchen'))>=5;
+    if(k===3)return countIn(w,has('lunch'))>=5;
+    if(k===4)return liftsInWeek(st,w).all>=2;
+    if(k===5)return countIn(w,has('bf'))>=5;
+    if(k===6)return countIn(w,function(s){return walkDone(st,s);})>=5;
+    return false;
+  }
+  return ok(a)&&ok(b);
+}
+function stageInfo(st,s){
+  if(st.stageMode==='manual'){var mk=st.stageManual||1,ms={1:P.start};for(var i=2;i<=mk;i++)ms[i]=P.stages[i].from;return {stage:mk,starts:ms,manual:true};}
+  var k=1,starts={1:P.start},sN=toNum(s);
+  for(var m=toNum(P.stages[2].from);m<=sN&&k<7;m+=7){
+    if(m<toNum(P.stages[k+1].from))continue;
+    if(m>=toNum(P.pauseFrom)&&m<=toNum(P.pauseTo))continue;
+    var mm=fromNum(m);
+    if(stagePass(st,k,mm)){k++;starts[k]=mm;}
+  }
+  return {stage:k,starts:starts,manual:false};
+}
+function inWarmup(si,s){var ls=si.starts[4];return !!ls&&toNum(s)<toNum(ls)+14;}
+function levelOn(st,s,si){
+  if(st.levelMode==='manual')return st.levelManual||1;
+  si=si||stageInfo(st,s);var ls=si.starts[4];if(!ls)return 1;
+  var level=1,sN=toNum(s);
+  for(var c=toNum(ls)+28;c<=sN&&level<5;c+=14){var w1=liftsInWeek(st,fromNum(c-14)),w2=liftsInWeek(st,fromNum(c-7));if(w1.done>=2&&w2.done>=2)level++;}
+  return level;
+}
+function nextLiftCheck(si,s){var ls=si.starts[4];if(!ls)return null;var c=toNum(ls)+28,sN=toNum(s);while(c<=sN)c+=14;return fromNum(c);}
+function liftLetter(st,s,level){var cnt=0,b=toNum(s);for(var n=toNum(P.start);n<b;n++){if(liftDone(st,fromNum(n)))cnt++;}return level>=5?'ABC'[cnt%3]:(cnt%2?'B':'A');}
+function walkMin(si,s){var ws=si.starts[6];if(!ws)return 10;var d=toNum(s)-toNum(ws);return d<14?10:d<28?15:d<42?20:30;}
+function prepCapAt(si,s){var ps=si.starts[7];if(!ps)return 1;return Math.min(4,1+Math.floor((toNum(s)-toNum(ps))/28));}
+function prepLevel(st,s,si){si=si||stageInfo(st,s);var ps=si.starts[7];if(!ps)return 1;var level=1,cnt=0,b=toNum(s);for(var n=toNum(ps);n<b;n++){if(prepDone(st,fromNum(n)))cnt++;if(level<prepCapAt(si,fromNum(n+1))&&cnt>=2){level++;cnt=0;}}return level;}
+function target(s){
+  var n=toNum(s),m=P.milestones;
+  if(n<=toNum(m[0][0]))return m[0][1];
+  for(var i=1;i<m.length;i++){var a=toNum(m[i-1][0]),b=toNum(m[i][0]);if(n<=b)return m[i-1][1]+(m[i][1]-m[i-1][1])*(n-a)/(b-a);}
+  return m[m.length-1][1];
+}
+function avg7(st,s){var sum=0,c=0;for(var k=0;k<7;k++){var d=st.days[addDays(s,-k)];if(d&&typeof d.w==='number'){sum+=d.w;c++;}}return c>=3?sum/c:null;}
+/*LOGIC-END*/
+
+var LS_KEY='phieu-theo-doi-26-tuan';
+var PLAN_URL='https://claude.ai/code/artifact/16e9742b-1477-4184-ba40-b5f1d84ca4e4';
+var DOW_VI=['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+var TYPE_LABEL={truc:'Trực 24 giờ',ratruc:'Ra trực',lam:'Ngày làm việc',nghi:'Ngày nghỉ',ta:'Ngày làm việc',dibo:'Ngày làm việc'};
+var TICK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 13.2l4.6 4.3L19.8 6.4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var EX={
+  A:[['Goblet squat, ôm tạ trước ngực','8–12 lần'],['Đẩy ngực nằm sàn (floor press)','8–12 lần'],['Kéo tạ một tay, tay và gối tựa ghế','10–12 lần mỗi bên'],['Romanian deadlift (RDL)','8–12 lần'],['Plank','30–45 giây']],
+  B:[['Lunge lùi, bước chân ra sau','8–10 lần mỗi bên'],['Đẩy tạ qua đầu, ngồi ghế tựa','8–12 lần'],['Kéo tạ hai tay, gập hông khoảng 45°','10–12 lần'],['Hip thrust, lưng tựa mép sofa hoặc giường','10–15 lần'],['Dead bug','8 lần mỗi bên']],
+  C:[['Squat cầm tạ hai bên','8–12 lần'],['Hít đất, chống tay lên mép giường nếu cần','dừng khi còn dư 2 lần'],['Kéo tạ một tay','10–12 lần mỗi bên'],['RDL','10 lần'],['Cuốn tạ tay trước, rồi duỗi tạ tay sau qua đầu','10–12 lần mỗi bài',2]]
+};
+var LEVEL={1:{n:3,sets:2,rir:'4 lần',time:'khoảng 15 phút'},2:{n:4,sets:2,rir:'3 lần',time:'khoảng 20 phút'},3:{n:5,sets:2,rir:'3 lần',time:'khoảng 25 phút'},4:{n:5,sets:3,rir:'2–3 lần',time:'khoảng 35 phút'},5:{n:5,sets:3,rir:'2–3 lần',time:'35–45 phút'}};
+var MINI='2 vòng liên tục: goblet squat 10, hít đất hoặc floor press 10, kéo tạ một tay 10 mỗi bên, plank 30 giây.';
+var MENU_HTML='<p class="sub" style="color:var(--text)"><strong>Sáng, khoảng 15–25.000đ:</strong> 2–3 trứng luộc kèm 1 hộp sữa không đường, mua ở cửa hàng tiện lợi trên đường đi làm. Hôm không mua được thì bánh mì 2 trứng, ít pate.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Trưa ở căng tin, khoảng 25–35.000đ:</strong> 1 món đạm luộc, hấp hoặc kho; 1–2 món rau; canh; 1 chén cơm. Luôn thêm 1 trứng hoặc đậu hũ, đây là cách tăng đạm rẻ nhất. Bỏ mỡ hành, nước béo, món chiên tẩm bột.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>17:30 ăn nhẹ, khoảng 8–10.000đ:</strong> 1 hộp sữa đậu nành hoặc sữa tươi không đường mua lẻ. Bỏ qua nếu đã ăn tối trước khi rời viện.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Tối, khoảng 30–40.000đ, không đặt qua ứng dụng:</strong> ăn ở căng tin hoặc quán gần viện trước khi về, hoặc mua cơm bình dân gần nhà mang về (1 món đạm, 1 món rau, nửa chén cơm).</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Chọn món đạm:</strong> xanh, ăn hằng ngày: thịt nạc luộc, gà luộc bỏ da, cá hấp, kho hoặc nướng, tôm, mực, trứng luộc, đậu hũ. Vàng, 1–2 lần/tuần: sườn nướng, gà kho, cá chiên, trứng chiên, bò xào. Đỏ, tối đa 1 lần/tuần và bỏ da: gà xối mỡ, gà chiên, heo quay, thịt ba chỉ, món tẩm bột chiên. Một phần đạm to cỡ lòng bàn tay.</p>'
+ +'<p class="sub">Khi đủ các bữa theo mẫu: khoảng 1.600–1.700 kcal và 100 g đạm mỗi ngày, 85–100.000đ.</p>';
+var PREP=[null,
+ {t:'Bậc 1: nấu cơm, luộc rau, mua món đạm chín',sub:'Khoảng 30 phút, nấu cho 3 bữa tối tới.',plan:['15:30 ghé chợ: 1 bó rau, món đạm chín đủ 3 bữa (gà luộc, thịt kho hoặc cá kho).','16:00 vo gạo, bắt nồi cơm.','16:05 luộc rau.','16:20 chia cơm, rau, món đạm vào 3 hộp.','16:30 để bớt nóng rồi cất tủ lạnh.']},
+ {t:'Bậc 2: tự làm trứng luộc hoặc thịt nạc luộc',sub:'Khoảng 45 phút, nấu cho 3 bữa tối tới.',plan:['15:30 ghé chợ: 1 bó rau, 400 g thịt nạc hoặc 6 trứng.','16:00 bắt nồi cơm; luộc thịt lửa nhỏ 20–25 phút, hoặc luộc trứng 10 phút.','16:10 luộc rau.','16:35 thái thịt hoặc bóc trứng, chia 3 hộp.','16:45 cất tủ lạnh.']},
+ {t:'Bậc 3: thêm ức gà, đủ 3 hộp',sub:'Khoảng 60 phút, nấu cho 3 bữa tối tới.',plan:['15:30 ghé chợ: rau, 400–450 g ức gà hoặc thịt nạc, vài quả trứng.','16:00 bắt nồi cơm; luộc ức gà 15–20 phút, hoặc áp chảo mỗi mặt 5–6 phút.','16:15 luộc rau.','16:40 thái gà, chia 3 hộp.','16:50 cất tủ lạnh.']},
+ {t:'Bậc 4: thêm món kho hoặc sốt, xoay vòng',sub:'Khoảng 60–75 phút, nấu cho 3 bữa tối tới.',plan:['15:30 ghé chợ: rau, 400 g cá, hoặc đậu hũ và 2 quả cà chua.','16:00 bắt nồi cơm; ướp cá 15 phút rồi kho 20–25 phút, hoặc làm đậu hũ sốt cà.','16:10 luộc rau.','16:45 chia 3 hộp.','17:00 cất tủ lạnh.']}];
+var RECIPES_HTML='<p class="sub" style="color:var(--text)"><strong>Mua 1 lần:</strong> 4 hộp đựng thức ăn có nắp (hộp thuỷ tinh hoặc nhựa ghi dùng được lò vi sóng). Nhà cần có nồi cơm điện, 1 nồi, 1 chảo.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Nấu cơm:</strong> 1 cốc gạo (cốc đi kèm nồi) đủ khoảng 3 chén cơm. Vo gạo 1–2 lần, đổ nước đến vạch số cốc trong lòng nồi, bấm nấu. Nồi chuyển sang giữ ấm thì để thêm 10 phút rồi mới mở.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Luộc rau:</strong> Đun sôi nước, thêm chút muối, cho rau vào. Rau lá (cải, rau muống) 2–3 phút; bông cải, đậu que, cà rốt 5–7 phút. Vớt ra để ráo.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Trứng luộc:</strong> Cho trứng vào nồi, đổ nước lạnh ngập trứng, đun sôi rồi để lửa nhỏ 10 phút. Ngâm nước lạnh 5 phút. Để nguyên vỏ trong tủ lạnh, ăn trong 7 ngày.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Thịt nạc luộc:</strong> 400 g cho 3 bữa. Rửa thịt, cho vào nồi nước ngập, đun sôi, hớt bọt, để lửa nhỏ 20–25 phút. Xiên đũa vào chỗ dày nhất, nước chảy ra trong là chín. Để nguội rồi thái lát, chấm nước mắm.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Ức gà:</strong> 400–450 g cho 3 bữa. Luộc như thịt nạc khoảng 15–20 phút; hoặc thái miếng dày khoảng 2 cm, áp chảo với 1 thìa dầu, mỗi mặt 5–6 phút, đến khi cắt ra không còn hồng.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Cá kho (bậc 4):</strong> 400 g cá basa hoặc cá lóc, ướp 2 thìa nước mắm, 1 thìa đường, tiêu trong 15 phút. Cho vào nồi với nửa chén nước, kho lửa nhỏ 20–25 phút đến khi nước sệt lại.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Đậu hũ sốt cà (bậc 4):</strong> Đậu hũ cắt miếng vuông. Xào 2 quả cà chua cắt nhỏ với chút dầu đến khi mềm, thêm đậu hũ và 1 thìa nước mắm, đun lửa nhỏ 5–7 phút.</p>'
+ +'<p class="sub" style="color:var(--text)"><strong>Cất giữ và hâm:</strong> Chia hộp khi đồ ăn còn ấm, cho vào tủ lạnh trong vòng 1 giờ vì trời nóng. Ăn trong 3–4 ngày. Hâm đến khi nóng bốc hơi đều: lò vi sóng 2–3 phút, hấp trong nồi cơm, hoặc đảo lại trên chảo. Chỉ hâm phần sẽ ăn.</p>';
+var WEEK_CHANGE=[
+  'Chuẩn bị: cân 3 sáng 9–11/10; ngày 11/10 đo vòng eo và chụp ảnh; tập thử 3 bài đầu buổi A với tạ rất nhẹ.',
+  'Mới: cân mỗi sáng; 17:30 ăn nhẹ có đạm và chọn sẵn bữa tối. Đồ uống ngọt giữ ít như hiện tại.',
+  'Mới: cà phê sữa gọi "ít sữa"; trà sữa tối đa 2 ly/tuần, size nhỏ, 30% đường, không trân châu.',
+  'Mới: bữa sáng có ít nhất 25 g đạm, ví dụ 2–3 trứng, thêm thịt, hoặc kèm sữa không đường.',
+  'Mới: đóng bếp sau bữa tối; ăn khuya chỉ từ danh sách (sữa chua không đường + trái cây nhỏ; 2 trứng luộc; sữa không đường + chuối).',
+  'Mới: trưa ở căng tin theo mẫu: 1 món đạm, 2 món rau, canh, 1 chén cơm; bỏ mỡ hành, nước béo, món chiên tẩm bột.',
+  'Mới: đạt khoảng 1.800–1.900 kcal và khoảng 100 g đạm mỗi ngày; chụp ảnh mọi thứ ăn uống trong tuần để so với thực đơn mặc định.'
+];
+
+var st=newState(),view='today',range='8w',cur=todayStr(),followToday=true;
+
+function todayStr(){var t=new Date();return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+function clampDate(s){var lo=toNum('2026-10-07'),hi=toNum('2027-05-31');return fromNum(Math.min(hi,Math.max(lo,toNum(s))));}
+function fmtNum(x,dg){if(x==null||isNaN(x))return '';var d=dg==null?1:dg;return Number(x).toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fmtDM(s){var a=s.split('-');return (+a[2])+'/'+(+a[1]);}
+function fmtDMY(s){var a=s.split('-');return (+a[2])+'/'+(+a[1])+'/'+a[0];}
+function esc(t){return String(t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function parseNum(v){if(v==null)return null;var t=String(v).trim().replace(',','.');if(t==='')return null;var x=parseFloat(t);return isFinite(x)?x:NaN;}
+
+/* ---------- storage: trên máy ---------- */
+var STATUS_TEXT={saved:'Đã lưu trên máy',error:'Không lưu được, kiểm tra cài đặt Safari'};
+function setStatus(k){var el=document.getElementById('status');if(el){el.textContent=STATUS_TEXT[k]||'';el.setAttribute('data-s',k);}}
+function storageLine(){return 'Dữ liệu lưu ngay trên máy này, không cần mạng và không phụ thuộc tài khoản nào. Mỗi Chủ nhật nên tải tệp dự phòng.';}
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify(st));return true;}catch(e){return false;}}
+function touch(){st.updatedAt=Date.now();setStatus(saveLocal()?'saved':'error');}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState!=='visible')return;var t=todayStr();if(followToday&&cur!==t){cur=t;render();}});
+function backupName(){return 'phieu-theo-doi-'+todayStr()+'.json';}
+function downloadBackup(btn){
+  var data=JSON.stringify(st),name=backupName();
+  function done(){if(btn){btn.textContent='Đã tạo tệp dự phòng';setTimeout(function(){btn.textContent='Tải tệp dự phòng';},1800);}}
+  try{
+    var blob=new Blob([data],{type:'application/json'});
+    var file=(typeof File==='function')?new File([blob],name,{type:'application/json'}):null;
+    if(file&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:name}).then(done,function(){});return;}
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);done();
+  }catch(e){copyText(data,document.getElementById('expfb'));}
+}
+function importObject(o,msg){
+  if(!o||typeof o!=='object'||!o.days)throw 0;
+  st=normalize(o);touch();if(msg)msg.textContent='Đã khôi phục dữ liệu.';
+}
+
+/* ---------- plan helpers for the page ---------- */
+function nextMonday(s){return addDays(weekStart(s),7);}
+function stageLine(si,s){
+  var k=si.stage,txt=P.stages[k].name+'.';
+  if(k>=7)return txt+' Giai đoạn cuối: giữ đều mọi thói quen.';
+  if(si.manual)return txt+' Đang chọn tay ở trang Cài đặt.';
+  var nx=P.stages[k+1].from,when=toNum(nx)>toNum(s)?nx:nextMonday(s);
+  return txt+' Lên giai đoạn '+(k+1)+' ('+P.stages[k+1].name.toLowerCase()+') khi 2 tuần liền đạt: '+P.stages[k].rule+'. Xét sớm nhất '+fmtDM(when)+'.';
+}
+function stageProgress(si,t){
+  var k=si.stage,mon=weekStart(t),prev=addDays(mon,-7);
+  if(k>=7)return '';
+  function cnt(m,key){return countIn(m,function(s){var d=st.days[s];return !!(d&&d[key]);});}
+  function line(m){
+    if(k===1)return 'cân '+countIn(m,function(s){var d=st.days[s];return !!d&&typeof d.w==='number';})+'/5, bữa tối '+cnt(m,'dinner')+'/5';
+    if(k===2)return 'đóng bếp '+cnt(m,'kitchen')+'/5';
+    if(k===3)return 'trưa theo mẫu '+cnt(m,'lunch')+'/5';
+    if(k===4)return 'tạ '+liftsInWeek(st,m).all+'/2';
+    if(k===5)return 'bữa sáng có đạm '+cnt(m,'bf')+'/5';
+    return 'vận động '+countIn(m,function(s){return walkDone(st,s);})+'/5';
+  }
+  return 'Tuần trước: '+line(prev)+'. Tuần này: '+line(mon)+'.';
+}
+function items(s,si){
+  var type=dayType(st,s),k=si.stage,L=[{k:'w'}];
+  if(dowOf(s)===0)L.push({k:'waist'});
+  if(k>=5)L.push({k:'bf',t:'Bữa sáng',label:'Bữa sáng có đạm',sub:'2–3 trứng luộc kèm 1 hộp sữa không đường.'});
+  if(k>=3)L.push({k:'lunch',t:'Bữa trưa',label:'Trưa theo mẫu',sub:'1 món đạm và thêm 1 trứng hoặc đậu hũ, 1–2 món rau, canh, 1 chén cơm; bỏ mỡ hành, nước béo, món chiên tẩm bột.'});
+  if(k>=6)L.push({k:'walk'});
+  var box=k>=7&&type==='lam'&&boxesAvailable(st,s);
+  L.push({k:'dinner',t:'Bữa tối',label:box?'Tối ăn hộp nấu sẵn':'Bữa tối không đặt qua ứng dụng',sub:box?'Hâm nóng 3–5 phút. Hộp đã để quá 4 ngày thì bỏ.':type==='truc'?'Đêm trực: ăn ở căng tin hoặc quán gần viện, 1 món đạm, 1 món rau, nửa chén cơm.':'Ăn ở căng tin hoặc quán gần viện, hoặc mua cơm bình dân mang về: 1 món đạm, 1 món rau, nửa chén cơm.'});
+  if(k>=7&&(type==='ratruc'||type==='nghi'))L.push({k:'prep'});
+  if(k>=4&&type!=='truc')L.push({k:'lift'});
+  if(k>=2)L.push({k:'kitchen',t:'Sau bữa tối',label:'Đóng bếp đến lúc ngủ',sub:'Đánh răng ngay sau bữa tối. Đói thật thì chỉ 1 hộp sữa không đường.'});
+  return L;
+}
+function walkPlan(s,type,si){
+  if(type==='ratruc')return {time:'Cả ngày',kind:'rest',title:'Ngày nghỉ: ngủ bù',sub:'Ra trực: không bắt buộc vận động. Thấy khoẻ thì đi bộ nhẹ 10 phút là điểm cộng.'};
+  if(type==='truc')return {time:'Trong ca',kind:'walk',title:'Đi bộ 10 phút trong viện',sub:'Ngày trực: đi quanh viện hoặc đi cầu thang thay thang máy.'};
+  if(inTet(s))return {time:'Trong ngày',kind:'walk',title:'Đi bộ, giữ từ 7.000 bước',sub:'Tuần Tết: đi chúc Tết cũng tính.'};
+  if(type==='nghi')return {time:'Trong ngày',kind:'walk',title:'Đi bộ '+walkMin(si,s)+' phút',sub:'Ngày nghỉ: đi ngay sau bữa sáng, trước khi kịp ngồi xuống.'};
+  return {time:'Ở viện',kind:'walk',title:'Đi cầu thang thay thang máy',sub:'Rảnh 10 phút thì đi bộ thêm. Chỉ cần đã đi cầu thang là tính.'};
+}
+function liftPlan(s,level,si){
+  if(inTet(s))return {kind:'mini',title:'Tết: buổi tạ tối thiểu (nếu muốn)',sub:MINI};
+  var letter=liftLetter(st,s,level);
+  if(inWarmup(si,s))return {kind:'lift',warm:true,letter:letter,level:1,title:'Tạ khởi động: 1 bài goblet squat',sub:'2 hiệp, dừng khi còn dư 4 lần, khoảng 3 phút. Hai tuần đầu chỉ cần chừng này.'};
+  var lv=LEVEL[level];
+  var sub=level===5?'Đủ 5 bài, 3 hiệp, dừng khi còn dư 2–3 lần; tăng tạ khi mọi hiệp đạt số lần trên cùng mà vẫn còn dư 2 lần (35–45 phút).'
+    :(lv.n===5?'Đủ 5 bài':lv.n+' bài đầu')+', mỗi bài '+lv.sets+' hiệp, dừng khi còn dư '+lv.rir+' ('+lv.time+').';
+  return {kind:'lift',letter:letter,level:level,title:'Tạ buổi '+letter+', nấc '+level,sub:sub};
+}
+function stats(from,to){
+  var r={wd:0,wT:0,dn:0,dnT:0,kc:0,kcT:0,lu:0,luT:0,lifts:0,bf:0,bfT:0,md:0,mT:0,pr:0};
+  for(var n=Math.max(toNum(from),toNum(P.start));n<=toNum(to);n++){
+    var s=fromNum(n),d=st.days[s]||{},type=dayType(st,s),k=stageInfo(st,s).stage;
+    if(type!=='ratruc'){r.wT++;if(typeof d.w==='number')r.wd++;}
+    r.dnT++;if(d.dinner)r.dn++;
+    if(k>=2){r.kcT++;if(d.kitchen)r.kc++;}
+    if(k>=3){r.luT++;if(d.lunch)r.lu++;}
+    if(liftDone(st,s))r.lifts++;
+    if(k>=5){r.bfT++;if(d.bf)r.bf++;}
+    if(k>=6&&type!=='ratruc'){r.mT++;if(walkDone(st,s))r.md++;}
+    if(d.prep)r.pr++;
+  }
+  return r;
+}
+function dayScore(s,si){
+  var d=st.days[s]||{},type=dayType(st,s),done=0,n=0;
+  items(s,si||stageInfo(st,s)).forEach(function(it){
+    if(it.k==='lift'||it.k==='prep'||it.k==='waist')return;
+    n++;
+    if(it.k==='w'){if(typeof d.w==='number'||type==='ratruc')done++;}
+    else if(it.k==='walk'){if(anyMove(st,s)||type==='ratruc')done++;}
+    else if(d[it.k])done++;
+  });
+  return done+'/'+n+' việc';
+}
+function note(text,kind){return '<div class="note'+(kind==='ink'?' ink':'')+'">'+esc(text)+'</div>';}
+
+/* ---------- today ---------- */
+function banners(s){
+  var h='',y=addDays(s,-1),t=todayStr();
+  if(toNum(y)>=toNum(P.start)&&toNum(s)<=toNum(t)&&stageInfo(st,y).stage>=6&&dayType(st,y)!=='ratruc'&&!anyMove(st,y))h+=note('Hôm qua chưa đánh dấu vận động. Nếu đã làm, lùi về hôm qua để đánh dấu. Nếu chưa, hôm nay đừng bỏ thêm: đi cầu thang hoặc đi bộ 10 phút là đủ.','red');
+  if(inTet(s))h+=note('Tuần Tết: ăn duy trì khoảng 2.300 kcal. Mỗi ngày một bữa thoải mái, các bữa còn lại theo khung. Bánh chưng 1 miếng nhỏ mỗi bữa có; bia tối đa 2 lon/ngày.','ink');
+  if(P.parties[s])h+=note(P.parties[s]+': bữa trước và sau tiệc nhẹ hơn; trong tiệc ăn đạm và rau trước, 1 phần tinh bột, bia tối đa 2 lon. Hôm sau ăn bình thường, không nhịn để bù.','ink');
+  if(s==='2026-10-11')h+=note('Chốt số đo nền: lấy cân trung bình 3 sáng 9–11/10, đo vòng eo và chụp ảnh.','ink');
+  else P.milestones.forEach(function(m){if(m[0]===s)h+=note('Mốc kiểm tra hôm nay: mục tiêu cân trung bình 7 ngày '+fmtNum(m[1])+' kg. Đo vòng eo và chụp ảnh.','ink');});
+  if(P.reviews.indexOf(s)>=0)h+=note('Tối nay tự chấm mức tự động của từng thói quen (sự kiện lúc 20:15 trên lịch), dùng số liệu ở trang Tiến độ.','ink');
+  return h;
+}
+function rowNum(key,time,label,unit,sub,d){
+  var v=typeof d[key]==='number'?fmtNum(d[key]):'';
+  return '<div class="row"><div class="t">'+time+'</div><div class="c"><div><div class="lbl">'+esc(label)+'</div>'+(sub?'<p class="sub">'+esc(sub)+'</p>':'')+'</div>'
+    +'<label class="blank"><input type="text" inputmode="decimal" autocomplete="off" data-key="'+key+'" value="'+esc(v)+'" placeholder="'+(key==='w'?'00,0':'000')+'" aria-label="'+esc(label)+' ('+unit+')">'+unit+'</label></div></div>';
+}
+function rowCheck(it,d){
+  var on=!!d[it.k];
+  return '<div class="row"><div class="t">'+esc(it.t)+'</div><div class="c"><div><div class="lbl">'+esc(it.label)+'</div>'+(it.sub?'<p class="sub">'+esc(it.sub)+'</p>':'')+'</div>'
+    +'<button type="button" class="box" role="checkbox" aria-checked="'+on+'" data-act="check" data-key="'+it.k+'" aria-label="'+esc(it.label)+'">'+TICK+'</button></div></div>';
+}
+function rowWalk(wp,s){
+  var on=walkDone(st,s);
+  return '<div class="row"><div class="t">'+esc(wp.time)+'</div><div class="c col"><div class="lbl">'+esc(wp.title)+'</div><p class="sub">'+esc(wp.sub)+'</p>'
+    +'<div class="mv"><button type="button" class="btn" data-act="walk" aria-pressed="'+on+'">'+(wp.kind==='rest'?'Có đi bộ nhẹ':'Đã làm')+'</button></div></div></div>';
+}
+function liftButtons(lp,d){
+  if(lp.kind==='mini'||lp.warm)return '<div class="mv"><button type="button" class="btn" data-act="move" data-v="done" aria-pressed="'+(d.move==='done')+'">'+(lp.warm?'Đã làm':'Đã tập')+'</button></div>';
+  return '<div class="mv"><button type="button" class="btn" data-act="move" data-v="done" aria-pressed="'+(d.move==='done')+'">Đã tập đủ</button><button type="button" class="btn" data-act="move" data-v="min" aria-pressed="'+(d.move==='min')+'">Bản tối thiểu</button></div>';
+}
+function exList(lp){
+  if(lp.kind!=='lift')return '';
+  var lv=lp.level===0?{n:3,sets:'1–2'}:LEVEL[lp.level],h='<ol class="exl">';
+  EX[lp.letter].slice(0,lp.warm?1:lv.n).forEach(function(x){h+='<li>'+esc(x[0])+': '+(lp.warm?2:(x[2]||lv.sets))+' hiệp × '+esc(x[1])+'</li>';});
+  return h+'</ol><p class="sub">Khởi động 5 phút. Nghỉ 60–90 giây giữa các hiệp.</p><p class="sub">Hôm mệt: '+esc(MINI)+'</p>';
+}
+function rowLift(lp,s,type,d){
+  var wk=liftsInWeek(st,s,s);
+  var head=type==='nghi'?'Ngày nghỉ':(type==='ratruc'?'Sau ngủ bù':'Tuỳ chọn');
+  var lead=type==='lam'?'Để dành cho ngày nghỉ hoặc chiều ra trực; hôm nay vẫn tập được nếu còn sức.':(type==='ratruc'?'Chỉ khi đã ngủ bù và thấy khoẻ.':'Ngày nghỉ là lúc tốt nhất để tập.');
+  var h='<div class="row"><div class="t">'+head+'</div><div class="c col"><div class="lbl">'+esc(lp.title)+'</div><p class="sub">'+esc('Tuần này: '+wk.all+'/2 buổi tạ. '+lead)+'</p>';
+  if(type==='lam'&&!d.move){
+    h+='<details class="ex"><summary>Hôm nay tập</summary><p class="sub">'+esc(lp.sub)+'</p>'+exList(lp)+liftButtons(lp,d)+'</details>';
+  }else{
+    h+='<p class="sub">'+esc(lp.sub)+'</p>';
+    if(lp.kind==='lift')h+='<details class="ex"><summary>Xem bài tập buổi '+lp.letter+'</summary>'+exList(lp)+'</details>';
+    h+=liftButtons(lp,d);
+  }
+  return h+'</div></div>';
+}
+function rowPrep(s,type,d){
+  var p=PREP[prepLevel(st,s)],head=type==='ratruc'?'16:00':'Ngày nghỉ',lead=type==='ratruc'?'Sau khi ngủ bù.':'Nếu chu kỳ này chưa nấu.';
+  return '<div class="row"><div class="t">'+head+'</div><div class="c col"><div class="lbl">Meal prep, '+esc(p.t.toLowerCase())+'</div><p class="sub">'+esc(lead+' '+p.sub)+'</p>'
+    +'<details class="ex"><summary>Lịch từng bước</summary><ol class="exl">'+p.plan.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol><p class="sub">Công thức chi tiết ở mục "Công thức meal prep" bên dưới.</p></details>'
+    +'<div class="mv"><button type="button" class="btn" data-act="prep" aria-pressed="'+(!!d.prep)+'">Đã nấu</button></div></div></div>';
+}
+function renderToday(){
+  var s=cur,t=todayStr(),d=st.days[s]||{},wk=weekNo(s),type=dayType(st,s),sch=scheduledType(st,s),si=stageInfo(st,s),level=levelOn(st,s,si);
+  var wkText=wk===0?'Tuần 0, chuẩn bị':(wk>30?'Tuần '+wk:'Tuần '+wk+'/30');
+  var h='<div class="datebar"><button type="button" class="navbtn" data-act="prev" aria-label="Ngày trước">‹</button>'
+    +'<div class="datehead"><div class="dow">'+DOW_VI[dowOf(s)]+(s===t?', hôm nay':'')+'</div><div class="dnum'+(s===t?' is-today':'')+'">'+fmtDMY(s)+'</div><div class="wkline">'+wkText+', giai đoạn '+si.stage+', '+TYPE_LABEL[type].toLowerCase()+'</div></div>'
+    +'<button type="button" class="navbtn" data-act="next" aria-label="Ngày sau">›</button></div>';
+  if(s!==t)h+='<p class="center" style="margin:0"><button type="button" class="link" data-act="today">Về hôm nay</button></p>';
+  h+=banners(s);
+  if(si.stage>1&&si.starts[si.stage]===s)h+=note('Hôm nay bắt đầu giai đoạn '+si.stage+': '+P.stages[si.stage].name.toLowerCase()+'. Chỉ thêm đúng việc này, các việc cũ giữ như cũ.','ink');
+  h+='<section class="sheet" aria-label="Y lệnh"><div class="sheet-h"><h2>Y lệnh '+(s===t?'hôm nay':'ngày '+fmtDM(s))+'</h2><span class="sub">'+dayScore(s,si)+'</span></div>';
+  items(s,si).forEach(function(it){
+    if(it.k==='w'){
+      var a=avg7(st,s),sub=type==='ratruc'?'Sáng ra trực: bỏ qua cũng được.':(a!=null?'Trung bình 7 ngày '+fmtNum(a)+' kg, mục tiêu '+fmtNum(target(s))+' kg.':'Cân trước khi ăn uống, ghi số vào đây.');
+      h+=rowNum('w','Khi dậy','Cân sau khi đi vệ sinh','kg',sub,d);
+    }else if(it.k==='waist')h+=rowNum('waist','Chủ nhật','Vòng eo ngang rốn (tuỳ chọn)','cm','Thở ra nhẹ rồi đo.',d);
+    else if(it.k==='walk')h+=rowWalk(walkPlan(s,type,si),s);
+    else if(it.k==='lift')h+=rowLift(liftPlan(s,level,si),s,type,d);
+    else if(it.k==='prep')h+=rowPrep(s,type,d);
+    else h+=rowCheck(it,d);
+  });
+  h+='</section>';
+  h+='<details class="ex sheet" style="padding:10px 14px"><summary>Thực đơn mặc định khi ăn ngoài</summary>'+MENU_HTML+'</details>';
+  if(si.stage>=7)h+='<details class="ex sheet" style="padding:10px 14px"><summary>Công thức meal prep cho người mới</summary>'+RECIPES_HTML+'</details>';
+  h+='<div class="meta"><p><strong>Giai đoạn '+si.stage+'/7:</strong> '+esc(stageLine(si,s))+'</p>';
+  h+='<label class="typesel"><span>Loại ngày</span><select data-act="type" aria-label="Loại ngày">'
+    +'<option value=""'+(d.type?'':' selected')+'>Theo lịch: '+TYPE_LABEL[sch].toLowerCase()+'</option>'
+    +['truc','ratruc','lam','nghi'].map(function(k){return '<option value="'+k+'"'+(normType(d.type||'')===k?' selected':'')+'>'+TYPE_LABEL[k]+'</option>';}).join('')
+    +'</select></label><p class="sub">Hôm nào được nghỉ, chọn "Ngày nghỉ". Đổi ca lẻ thì chọn lại ở đây.</p></div>';
+  document.getElementById('view').innerHTML=h;
+}
+
+/* ---------- progress ---------- */
+function chart(t){
+  var tn=toNum(t),a,b,first=toNum('2026-10-09');
+  if(range==='all'){a=first;b=Math.max(toNum(P.end),tn);}else{a=Math.max(first,tn-48);b=Math.max(tn+7,a+21);}
+  var pts=[],avs=[],tg=[],n,s,d,av;
+  for(n=a;n<=Math.min(b,tn);n++){s=fromNum(n);d=st.days[s];if(d&&typeof d.w==='number')pts.push([n,d.w]);av=avg7(st,s);if(av!=null)avs.push([n,av]);}
+  for(n=a;n<=b;n++){if((n-a)%2===0||n===b)tg.push([n,target(fromNum(n))]);}
+  var ys=pts.map(function(p){return p[1];}).concat(avs.map(function(p){return p[1];}),tg.map(function(p){return p[1];}));
+  var lo=Math.floor(Math.min.apply(null,ys)-.5),hi=Math.ceil(Math.max.apply(null,ys)+.5);if(hi-lo<3)hi=lo+3;
+  var W=340,H=190,L=34,R=8,T=10,B=24;
+  function x(v){return (L+(v-a)/(b-a)*(W-L-R)).toFixed(1);}
+  function y(v){return (T+(hi-v)/(hi-lo)*(H-T-B)).toFixed(1);}
+  var g='',step=(hi-lo)>8?2:1,v;
+  for(v=lo;v<=hi;v+=step)g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" class="gl"/><text x="'+(L-6)+'" y="'+(+y(v)+3.5)+'" class="ax" text-anchor="end">'+v+'</text>';
+  var every=range==='all'?4:1,startN=toNum(P.start);
+  for(n=startN;n<=b;n+=7){if(n<a)continue;var k=(n-startN)/7;g+='<line x1="'+x(n)+'" x2="'+x(n)+'" y1="'+T+'" y2="'+(H-B)+'" class="vl"/>';if(k%every===0)g+='<text x="'+x(n)+'" y="'+(H-8)+'" class="ax" text-anchor="middle">'+fmtDM(fromNum(n))+'</text>';}
+  if(tn>=a&&tn<=b)g+='<line x1="'+x(tn)+'" x2="'+x(tn)+'" y1="'+T+'" y2="'+(H-B)+'" class="td"/>';
+  g+='<polyline points="'+tg.map(function(p){return x(p[0])+','+y(p[1]);}).join(' ')+'" class="tg"/>';
+  if(avs.length>1)g+='<polyline points="'+avs.map(function(p){return x(p[0])+','+y(p[1]);}).join(' ')+'" class="av"/>';
+  g+=pts.map(function(p){return '<circle cx="'+x(p[0])+'" cy="'+y(p[1])+'" r="2.7" class="pt"/>';}).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Biểu đồ cân nặng so với mục tiêu">'+g+'</svg>';
+}
+function advice(t){
+  var tn=toNum(t);
+  if(tn>=toNum(P.tetFrom)&&tn<=toNum('2027-02-17'))return 'Quanh Tết cân dao động do muối và tinh bột giữ nước. Xem lại sau 17/2.';
+  var a0=avg7(st,t),a14=avg7(st,addDays(t,-14));
+  if(a0==null||a14==null)return 'Cần cân đều 2 tuần gần nhất để tính tốc độ giảm.';
+  var rate=(a14-a0)/2,msg='Tốc độ 2 tuần qua: '+(rate>=0?'giảm ':'tăng ')+fmtNum(Math.abs(rate))+' kg/tuần. ';
+  if(rate>1&&tn>=toNum('2026-11-09'))msg+='Nhanh quá: ăn thêm một chút để giữ cơ.';
+  else if(rate>=.5)msg+='Đúng nhịp về 73 kg vào tháng 5: giữ nguyên.';
+  else msg+='Chậm hơn nhịp 0,5 kg/tuần. Đừng thêm việc mới: xem thói quen của giai đoạn hiện tại đã đủ 5 ngày/tuần và đúng khẩu phần chưa.';
+  if(tn>=toNum('2027-01-03')&&(P.milestones[0][1]-a0)/P.milestones[0][1]<.05)msg+=' Đã qua tuần 12 mà giảm chưa tới 5% dù làm đều: nên bàn với bác sĩ về các lựa chọn hỗ trợ.';
+  return msg;
+}
+function chainHtml(t){
+  var tn=toNum(t),mon=tn-((dowOf(t)+6)%7),start=mon-21,h='<div class="chain">';
+  ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(x){h+='<div class="h">'+x+'</div>';});
+  for(var n=start;n<start+28;n++){
+    var s=fromNum(n),cls='cell',lab='chưa tới';
+    if(n>tn)cls+=' future';
+    else if(n<toNum(P.start)){cls+=' pre';lab='trước kế hoạch';}
+    else{var m=anyMove(st,s);if(m==='done'){cls+=' done';lab='đã vận động';}else if(m==='min'){cls+=' min';lab='bản tối thiểu';}else if(dayType(st,s)==='ratruc'){cls+=' rest';lab='ngày nghỉ sau trực';}else{cls+=' miss';lab='chưa đánh dấu';}}
+    if(n===tn)cls+=' today';
+    h+='<div class="'+cls+'" role="img" aria-label="'+fmtDM(s)+': '+lab+'">'+(+s.split('-')[2])+'</div>';
+  }
+  return h+'</div>';
+}
+function weekSummary(t){
+  if(toNum(t)<toNum(P.start))return 'Kế hoạch bắt đầu thứ Hai 12/10.';
+  var si=stageInfo(st,t),wk=weekNo(t),mon=weekStart(t),sun=addDays(mon,6),S=stats(mon,t),a=avg7(st,t);
+  var parts=['giai đoạn '+si.stage+'/7','cân '+S.wd+'/'+S.wT+' ngày','bữa tối không đặt ứng dụng '+S.dn+'/'+S.dnT];
+  if(si.stage>=2&&S.kcT)parts.push('đóng bếp '+S.kc+'/'+S.kcT);
+  if(si.stage>=3&&S.luT)parts.push('trưa theo mẫu '+S.lu+'/'+S.luT);
+  if(si.stage>=4)parts.push('tạ '+S.lifts+'/2 buổi');
+  if(si.stage>=5&&S.bfT)parts.push('bữa sáng có đạm '+S.bf+'/'+S.bfT);
+  if(si.stage>=6&&S.mT)parts.push('vận động '+S.md+'/'+S.mT+' ngày');
+  if(si.stage>=7)parts.push('meal prep '+S.pr+' lần');
+  parts.push(a!=null?'cân trung bình '+fmtNum(a)+' kg (mục tiêu '+fmtNum(target(t))+' kg)':'cân trung bình chưa đủ số liệu');
+  return 'Tuần '+wk+' ('+fmtDM(mon)+'–'+fmtDM(sun)+', tính đến '+fmtDM(t)+'): '+parts.join('; ')+'.';
+}
+function renderProgress(){
+  var t=todayStr(),a=avg7(st,t),tg=target(t),si=stageInfo(st,t),lvl=levelOn(st,t,si),h='';
+  var diff=a!=null?a-tg:null,dtext=diff==null?'':(Math.abs(diff)<.05?'đúng mục tiêu':(diff>0?'cao hơn ':'thấp hơn ')+fmtNum(Math.abs(diff))+' kg');
+  h+='<section class="sheet"><div class="sheet-h"><h2>Cân nặng</h2><span class="sub">trung bình 7 ngày</span></div>';
+  h+='<div class="stat"><div class="big">'+(a!=null?fmtNum(a)+' kg':'Chưa đủ số liệu')+'</div><p class="sub">'+(a!=null?'Mục tiêu hôm nay '+fmtNum(tg)+' kg, đang '+dtext+'.':'Cần ít nhất 3 lần cân trong 7 ngày gần nhất.')+'</p></div>';
+  h+='<div class="seg" role="group" aria-label="Khoảng thời gian"><button type="button" class="btn" data-act="range" data-v="8w" aria-pressed="'+(range==='8w')+'">8 tuần</button><button type="button" class="btn" data-act="range" data-v="all" aria-pressed="'+(range==='all')+'">Cả lộ trình</button></div>';
+  h+='<div class="chartwrap">'+chart(t)+'</div><p class="legend">Chấm: từng lần cân. Đường liền: trung bình 7 ngày. Đường đứt đỏ: mục tiêu theo lộ trình, 75,5 kg vào 11/4 và 73 kg vào 9/5. Vạch vàng: hôm nay.</p>';
+  h+='<div class="stat"><p class="sub" style="margin:0;color:var(--text)">'+esc(advice(t))+'</p></div></section>';
+  var sp=stageProgress(si,t);
+  h+='<section class="sheet"><div class="sheet-h"><h2>Giai đoạn '+si.stage+'/7</h2><span class="sub">'+(si.manual?'chọn tay':'tự động')+'</span></div><div class="stat"><div class="lbl">'+esc(P.stages[si.stage].name)+'</div><p class="sub">'+esc(stageLine(si,t))+'</p>'+(sp?'<p class="sub">'+esc(sp)+'</p>':'')+'</div></section>';
+  h+='<section class="sheet"><div class="sheet-h"><h2>14 ngày qua</h2>';
+  if(toNum(t)>=toNum(P.start)){
+    var from=fromNum(Math.max(toNum(P.start),toNum(t)-13)),S=stats(from,t);
+    h+='<span class="sub">'+fmtDM(from)+'–'+fmtDM(t)+'</span></div><div class="kv">';
+    h+='<span>Ngày đã cân</span><span>'+S.wd+'/'+S.wT+'</span>';
+    h+='<span>Bữa tối không đặt ứng dụng</span><span>'+S.dn+'/'+S.dnT+'</span>';
+    if(si.stage>=2&&S.kcT)h+='<span>Đóng bếp</span><span>'+S.kc+'/'+S.kcT+'</span>';
+    if(si.stage>=3&&S.luT)h+='<span>Trưa theo mẫu</span><span>'+S.lu+'/'+S.luT+'</span>';
+    if(si.stage>=4)h+='<span>Buổi tạ (mục tiêu 2/tuần)</span><span>'+S.lifts+'</span>';
+    if(si.stage>=5&&S.bfT)h+='<span>Bữa sáng có đạm</span><span>'+S.bf+'/'+S.bfT+'</span>';
+    if(si.stage>=6&&S.mT)h+='<span>Ngày có vận động</span><span>'+S.md+'/'+S.mT+'</span>';
+    if(si.stage>=7)h+='<span>Lần meal prep</span><span>'+S.pr+'</span>';
+    h+='</div>';
+  }else h+='</div><div class="stat"><p class="sub" style="margin:0">Kế hoạch bắt đầu thứ Hai 12/10.</p></div>';
+  if(si.stage>=4){
+    var warm=inWarmup(si,t);
+    var lt=warm?'Đang khởi động 2 tuần: mỗi buổi chỉ 1 bài goblet squat. Từ '+fmtDM(addDays(si.starts[4],14))+' vào nấc 1.'
+      :st.levelMode==='manual'?'Đang chọn tay ở trang Cài đặt.'
+      :(lvl>=5?'Đã ở nấc cao nhất; tăng tạ theo luật hai bước.':'Lên nấc khi 2 tuần liền mỗi tuần có ít nhất 2 buổi tạ đủ. Lần xét tiếp theo: '+fmtDM(nextLiftCheck(si,t))+'.');
+    h+='<div class="stat"><div class="lbl">Nấc tạ: '+(warm?'khởi động':lvl)+'</div><p class="sub">'+esc(lt)+'</p></div>';
+  }
+  if(si.stage>=7){var pl=prepLevel(st,t,si);h+='<div class="stat"><div class="lbl">Bậc meal prep: '+pl+'</div><p class="sub">'+esc(PREP[pl].t+'. Mỗi 4 tuần lên một bậc, nếu đã nấu được 2 lần ở bậc hiện tại.')+'</p></div>';}
+  h+='</section>';
+  if(si.stage>=4)h+='<section class="sheet"><div class="sheet-h"><h2>Chuỗi vận động 4 tuần</h2></div>'+chainHtml(t)+'<p class="legend">Ô tô xanh: đã vận động. Ô viền xanh: bản tối thiểu. Ô viền đỏ: chưa đánh dấu. Ô chấm xám: ngày nghỉ sau trực.</p></section>';
+  h+='<section class="sheet"><div class="sheet-h"><h2>Tóm tắt tuần</h2><span class="sub">gửi người giữ cam kết</span></div><div class="pad"><p class="sumtext" id="sumtext">'+esc(weekSummary(t))+'</p><button type="button" class="btn" data-act="copy-sum">Sao chép tóm tắt</button><textarea id="sumfb" hidden readonly aria-label="Tóm tắt để sao chép"></textarea></div></section>';
+  document.getElementById('view').innerHTML=h;
+}
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  var t=todayStr(),nx=null;
+  for(var n=toNum(t);n<toNum(t)+12;n++){if(dayType(st,fromNum(n))==='truc'){nx=fromNum(n);break;}}
+  var h='<section class="sheet"><div class="sheet-h"><h2>Chu kỳ trực</h2></div><div class="pad">'
+    +'<p style="margin:0">Trực 24 giờ, 6 ngày một lần. Ca trực kế tiếp: <strong>'+(nx?DOW_VI[dowOf(nx)]+' '+fmtDMY(nx):'chưa rõ')+'</strong>.</p>'
+    +'<p class="sub">Đổi ca lẻ một ngày thì chọn lại "Loại ngày" ở trang Hôm nay. Khi lịch trực đổi hẳn, nhập ngày trực mới để tính lại chu kỳ từ hôm nay.</p>'
+    +'<div class="formrow"><input type="date" id="newanchor" value="'+(nx||t)+'" aria-label="Ngày trực mới"><button type="button" class="btn" data-act="anchor">Tính lại chu kỳ</button></div><p class="sub" id="anchormsg"></p></div></section>';
+  h+='<section class="sheet"><div class="sheet-h"><h2>Giai đoạn</h2></div><div class="pad">'
+    +'<label class="radio"><input type="radio" name="sm" value="auto"'+(st.stageMode!=='manual'?' checked':'')+'> Tự động theo luật 2 tuần</label>'
+    +'<label class="radio"><input type="radio" name="sm" value="manual"'+(st.stageMode==='manual'?' checked':'')+'> Chọn tay</label>'
+    +'<div class="formrow"><select id="stgsel" aria-label="Giai đoạn chọn tay"'+(st.stageMode==='manual'?'':' disabled')+'>'+[1,2,3,4,5,6,7].map(function(k){return '<option value="'+k+'"'+(st.stageManual===k?' selected':'')+'>Giai đoạn '+k+': '+P.stages[k].name+'</option>';}).join('')+'</select></div>'
+    +'<p class="sub">Chọn tay khi bạn đã làm đều nhưng quên đánh dấu, hoặc muốn ở lại một giai đoạn lâu hơn.</p></div></section>';
+  h+='<section class="sheet"><div class="sheet-h"><h2>Nấc tạ</h2></div><div class="pad">'
+    +'<label class="radio"><input type="radio" name="lm" value="auto"'+(st.levelMode==='auto'?' checked':'')+'> Tự động theo luật 2 tuần</label>'
+    +'<label class="radio"><input type="radio" name="lm" value="manual"'+(st.levelMode==='manual'?' checked':'')+'> Chọn tay</label>'
+    +'<div class="formrow"><select id="lvlsel" aria-label="Nấc chọn tay"'+(st.levelMode==='manual'?'':' disabled')+'>'+[1,2,3,4,5].map(function(k){return '<option value="'+k+'"'+(st.levelManual===k?' selected':'')+'>Nấc '+k+'</option>';}).join('')+'</select></div>'
+    +'<p class="sub">Chọn tay khi bạn đã tập nhưng quên đánh dấu nhiều ngày, hoặc muốn giữ nấc lâu hơn.</p></div></section>';
+  h+='<section class="sheet"><div class="sheet-h"><h2>Dữ liệu</h2></div><div class="pad">'
+    +'<p style="margin:0" id="status2">'+esc(storageLine())+'</p>'
+    +'<div class="formrow"><button type="button" class="btn" data-act="download">Tải tệp dự phòng</button><button type="button" class="btn" data-act="export">Sao chép dữ liệu</button></div>'
+    +'<textarea id="expfb" hidden readonly aria-label="Dữ liệu dự phòng"></textarea>'
+    +'<p class="sub">Khôi phục: chọn tệp dự phòng, hoặc dán dữ liệu đã sao chép vào ô dưới rồi bấm Khôi phục. Dữ liệu hiện tại sẽ được thay.</p>'
+    +'<div class="formrow"><label class="btn" style="display:inline-flex;align-items:center">Mở tệp dự phòng<input type="file" id="impfile" accept="application/json,.json,.txt" hidden></label></div>'
+    +'<textarea id="imp" placeholder="Dán dữ liệu dự phòng ở đây" aria-label="Dán dữ liệu dự phòng"></textarea>'
+    +'<button type="button" class="btn" data-act="import">Khôi phục</button><p class="sub" id="impmsg"></p></div></section>';
+  h+='<p class="center" style="margin-top:16px"><a href="'+PLAN_URL+'" target="_blank" rel="noopener">Mở kế hoạch 26 tuần (trên Claude)</a></p>';
+  document.getElementById('view').innerHTML=h;
+}
+
+/* ---------- render + events ---------- */
+function render(){
+  if(view==='today')renderToday();else if(view==='progress')renderProgress();else renderSettings();
+  Array.prototype.forEach.call(document.querySelectorAll('nav.tabs button'),function(b){if(b.getAttribute('data-tab')===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+}
+function dayObj(s){if(!st.days[s])st.days[s]={};return st.days[s];}
+function cleanDay(s){var d=st.days[s];if(!d)return;Object.keys(d).forEach(function(k){if(d[k]===null||d[k]===undefined||d[k]===false||d[k]==='')delete d[k];});if(!Object.keys(d).length)delete st.days[s];}
+function copyText(text,fb){
+  function fallback(){if(fb){fb.hidden=false;fb.value=text;fb.focus();fb.select();}return false;}
+  if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text).then(function(){return true;},fallback);
+  return Promise.resolve(fallback());
+}
+var viewEl=document.getElementById('view');
+viewEl.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var act=b.getAttribute('data-act'),d;
+  if(act==='prev'||act==='next'){cur=clampDate(addDays(cur,act==='prev'?-1:1));followToday=cur===todayStr();render();}
+  else if(act==='today'){cur=todayStr();followToday=true;render();}
+  else if(act==='check'){d=dayObj(cur);var k=b.getAttribute('data-key');d[k]=!d[k];cleanDay(cur);touch();render();}
+  else if(act==='walk'){d=dayObj(cur);d.walk=!walkDone(st,cur);cleanDay(cur);touch();render();}
+  else if(act==='prep'){d=dayObj(cur);d.prep=!d.prep;cleanDay(cur);touch();render();}
+  else if(act==='move'){d=dayObj(cur);var v=b.getAttribute('data-v');d.move=d.move===v?null:v;cleanDay(cur);touch();render();}
+  else if(act==='range'){range=b.getAttribute('data-v');render();}
+  else if(act==='copy-sum'){var txt=weekSummary(todayStr());copyText(txt,document.getElementById('sumfb')).then(function(ok){if(ok){b.textContent='Đã sao chép';setTimeout(function(){b.textContent='Sao chép tóm tắt';},1800);}});}
+  else if(act==='download'){downloadBackup(b);}
+  else if(act==='export'){copyText(JSON.stringify(st),document.getElementById('expfb')).then(function(ok){if(ok){b.textContent='Đã sao chép dữ liệu';setTimeout(function(){b.textContent='Sao chép dữ liệu dự phòng';},1800);}});}
+  else if(act==='import'){
+    var raw=(document.getElementById('imp').value||'').trim(),msg=document.getElementById('impmsg');
+    try{importObject(JSON.parse(raw),null);render();var m1=document.getElementById('impmsg');if(m1)m1.textContent='Đã khôi phục dữ liệu.';}
+    catch(err){msg.textContent='Không đọc được dữ liệu này. Hãy dán đúng đoạn dữ liệu dự phòng đã sao chép.';}
+  }
+  else if(act==='anchor'){
+    var val=document.getElementById('newanchor').value,am=document.getElementById('anchormsg'),t=todayStr();
+    if(!DATE_RE.test(val)){am.textContent='Chọn một ngày trực hợp lệ.';return;}
+    st.anchors=st.anchors.filter(function(x){return x.from!==t;});
+    st.anchors.push({from:t,anchor:val});
+    st.anchors.sort(function(x,y){return toNum(x.from)-toNum(y.from);});
+    touch();render();
+    var m2=document.getElementById('anchormsg');if(m2)m2.textContent='Đã tính lại chu kỳ trực từ hôm nay. Lịch Google không tự đổi theo.';
+  }
+});
+viewEl.addEventListener('change',function(e){
+  var el=e.target;
+  if(el.matches('input[data-key]')){
+    var key=el.getAttribute('data-key'),x=parseNum(el.value),d=dayObj(cur);
+    var ok=x===null||(key==='w'?(x>=40&&x<=200):(x>=50&&x<=200));
+    if(!ok||isNaN(x)){el.value=typeof d[key]==='number'?fmtNum(d[key]):'';cleanDay(cur);return;}
+    d[key]=x===null?null:Math.round(x*10)/10;cleanDay(cur);touch();render();
+  }else if(el.matches('select[data-act="type"]')){
+    var d2=dayObj(cur);d2.type=el.value||null;cleanDay(cur);touch();render();
+  }else if(el.id==='impfile'){
+    var f=el.files&&el.files[0];if(!f)return;var rd=new FileReader();
+    rd.onload=function(){try{importObject(JSON.parse(String(rd.result)),null);render();var m=document.getElementById('impmsg');if(m)m.textContent='Đã khôi phục từ tệp '+f.name+'.';}catch(err){var m2=document.getElementById('impmsg');if(m2)m2.textContent='Tệp này không phải tệp dự phòng của phiếu theo dõi.';}};
+    rd.readAsText(f);
+  }else if(el.name==='lm'){
+    st.levelMode=el.value==='manual'?'manual':'auto';touch();render();
+  }else if(el.id==='lvlsel'){
+    st.levelManual=+el.value;touch();render();
+  }else if(el.name==='sm'){
+    st.stageMode=el.value==='manual'?'manual':'auto';touch();render();
+  }else if(el.id==='stgsel'){
+    st.stageManual=+el.value;touch();render();
+  }
+});
+document.querySelector('nav.tabs').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-tab]');if(!b)return;
+  view=b.getAttribute('data-tab');
+  if(view==='today'&&followToday)cur=todayStr();
+  window.scrollTo(0,0);render();
+});
+
+try{var raw=localStorage.getItem(LS_KEY);if(raw)st=normalize(JSON.parse(raw));}catch(e){}
+cur=clampDate(todayStr());
+render();setStatus('saved');
+if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){});}
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}
+})();
+</script>
+</body>
+</html>
